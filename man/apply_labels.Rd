@@ -7,13 +7,11 @@
 apply_labels(survey_data, question_label, answer_label)
 }
 \arguments{
-\item{survey_data}{Tibble. Dados já organizados com os percentuais calculados}
+\item{survey_data}{Tibble. Question table with numbers as categories}
 
-\item{question_label}{Tibble. Dados gerados pelo usuário com os rótulos
-de questão vinculado aos identificadores de questão}
+\item{question_label}{Tibble. Table of question labels}
 
-\item{answer_label}{Tibble. Dados gerados pelo usuário com os rótulos
-de respostas vinculadas aos identificadores de questão}
+\item{answer_label}{Tibble. Table of answer labels}
 }
 \value{
 Tibble. The survey_data with

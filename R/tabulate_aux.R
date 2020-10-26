@@ -23,11 +23,9 @@ chi.square_pvalue <- function(contingency.table) {
 #'
 #' @author Leonardo Rocha
 #'
-#' @param survey_data Tibble. Dados já organizados com os percentuais calculados
-#' @param question_label Tibble. Dados gerados pelo usuário com os rótulos
-#' de questão vinculado aos identificadores de questão
-#' @param answer_label Tibble. Dados gerados pelo usuário com os rótulos
-#' de respostas vinculadas aos identificadores de questão
+#' @param survey_data Tibble. Question table with numbers as categories
+#' @param question_label Tibble. Table of question labels
+#' @param answer_label Tibble. Table of answer labels
 #'
 #' @return Tibble. The survey_data with
 #'
@@ -50,4 +48,21 @@ apply_labels <- function(survey_data, question_label, answer_label) {
     ) %>%
     dplyr::select(main_question, sub_question, p_value, knowledge, answer_label, count, percent, total) %>%
     dplyr::arrange(sub_question, knowledge, answer_label)
+}
+
+
+#' Get number of questions
+#'
+#' Get the number of questions from the survey data.
+#'
+#' @author Leonardo Rocha
+#'
+#' @param survey_data Tibble. Question table with numbers as categories
+#'
+#' @return Numeric. The number of questions containing in the survey data
+get_n_questions <- function(survey_data) {
+  columns <- colnames(survey_data)
+  last_col <- columns[ncol(survey_data)]
+  main_question <- stringr::str_split(last_col, pattern = "_")[[1]][1]
+  as.numeric(stringr::str_replace(main_question, pattern = "q", replacement = ""))
 }

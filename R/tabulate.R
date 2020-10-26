@@ -20,10 +20,10 @@
 #' @importFrom magrittr %>%
 #' @export
 #'
-#' @example
+#' @examples
 #' tab_survey_question(AI_survey$survey_data, 4, AI_survey$questions_labels, AI_survey$answers_labels)
 #' tab_survey_question(AI_survey$survey_data, 2, AI_survey$questions_labels, AI_survey$answers_labels)
-tab_suvey_question <- function(survey_data, question_number, question_label, answer_label) {
+tab_survey_question <- function(survey_data, question_number, question_label, answer_label) {
   # geração do string que vai ser utilizado para poder selecionar as colunas de dt
   # que serão utilizadas para a tabulação
   question_start <- paste("q", question_number, "_", sep = "")
@@ -84,4 +84,29 @@ tab_suvey_question <- function(survey_data, question_number, question_label, ans
     dplyr::ungroup() %>%
     dplyr::left_join(p_values, by = "question") %>%
     apply_labels(question_label = question_label, answer_label = answer_label)
+}
+
+#' Tabulate all survey questions
+#'
+#'
+#' @author Leonardo Rocha
+#'
+#' @param survey_data Tibble. Survey data
+#' @param question_label Tibble. Question labels data
+#' @param answer_label Tibble. Answers labels data
+#'
+#' @return List. A list of Tables. A Table for each question
+#' with percent values and p-value (chi-squared test between knowledge level)
+#' for sub-questions and knowledge levels.
+tab_all_survey_question <- function(survey_data, question_label, answer_label) {
+  n_questions <- get_n_questions(survey_data)
+  questions_list <- seq(2, n_questions)
+  data_list <- purrr::map(questions_list, tab_survey_question,
+      survey_data = survey_data,
+      question_label = question_label,
+      answer_label = answer_label)
+  name_list <- sapply(questions_list, function(x) {paste('q', x, sep = '')})
+  names(data_list) <- name_list
+
+  return(data_list)
 }
