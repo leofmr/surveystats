@@ -17,6 +17,8 @@ chi.square_pvalue <- function(contingency.table) {
 
 
 
+
+
 #' Apply Answers and Questions Labels
 #'
 #' Apply answers and questions labels to the survey dataset.
@@ -49,6 +51,9 @@ apply_labels <- function(survey_data, question_label, answer_label) {
     dplyr::select(main_question, sub_question, p_value, knowledge, answer_label, count, percent, total) %>%
     dplyr::arrange(sub_question, knowledge, answer_label)
 }
+
+
+
 
 
 #' Get number of questions

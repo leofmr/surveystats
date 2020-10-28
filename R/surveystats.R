@@ -19,4 +19,9 @@ utils::globalVariables(c("data",
                          "main_question",
                          "sub_question",
                          "p_value",
-                         "percent"))
+                         "percent",
+                         "answer_label",
+                         "aes",
+                         "position_stack",
+                         "element_blank",
+                         "guide_legend"))

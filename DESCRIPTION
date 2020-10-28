@@ -21,4 +21,7 @@ Imports:
     stats,
     stringr,
     tidyselect,
-    purrr
+    purrr,
+    openxlsx,
+    ggplot2,
+    scales
