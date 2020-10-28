@@ -21,7 +21,5 @@ utils::globalVariables(c("data",
                          "p_value",
                          "percent",
                          "answer_label",
-                         "aes",
-                         "position_stack",
-                         "element_blank",
-                         "guide_legend"))
+                         "group1",
+                         "group2"))
