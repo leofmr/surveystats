@@ -6,7 +6,7 @@ Authors@R:
            family = "Rocha",
            role = c("aut", "cre"),
            email = "leonardo.rocha@fiocruz.br")
-Description: What the package does (one paragraph).
+Description: A package for Survey Monkey statistical and graphical analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -28,3 +28,5 @@ Imports:
     treemapify,
     cowplot,
     forcats
+URL: https://github.com/leofmr/surveystats
+BugReports: https://github.com/leofmr/surveystats/issues
