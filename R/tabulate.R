@@ -140,10 +140,13 @@ tab_all_survey_question <- function(surveydata) {
 load_data <- function(file_path) {
   list(
     'data' = openxlsx::read.xlsx(file_path, sheet = 'data') %>%
-      dplyr::mutate_all(as.character),
+      dplyr::mutate_all(as.character) %>%
+      dplyr::as_tibble(),
     'questions' = openxlsx::read.xlsx(file_path, sheet = 'questions') %>%
-      dplyr::mutate_all(as.character),
+      dplyr::mutate_all(as.character) %>%
+      dplyr::as_tibble(),
     'answers' = openxlsx::read.xlsx(file_path, sheet = 'answers') %>%
-      dplyr::mutate_all(as.character)
+      dplyr::mutate_all(as.character) %>%
+      dplyr::as_tibble()
   )
 }

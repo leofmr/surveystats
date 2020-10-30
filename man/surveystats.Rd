@@ -9,6 +9,14 @@
 This package has functionalities regarding the statistical and graphical analysis
 of Survey Monkey survey research data.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/leofmr/surveystats}
+  \item Report bugs at \url{https://github.com/leofmr/surveystats/issues}
+}
+
+}
 \author{
 Leonardo Rocha \email{leonardo.rocha@fiocruz.br}
 }

@@ -45,8 +45,10 @@ apply_labels <- function(survey_data, question_label, answer_label) {
       answer = as.integer(answer),
       main_question = stats::reorder(main_question, main_code),
       sub_question = stats::reorder(sub_question, sub_code),
-      answer_label = stats::reorder(answer_label, answer),
-      knowledge = factor(knowledge, labels = c("Good knowledge", "Some knowledge", "Total"))
+      #answer_label = stats::reorder(answer_label, answer),
+      answer_label = forcats::fct_reorder(answer_label, answer),
+      answer_label = factor(answer_label, ordered = TRUE),
+      knowledge = factor(knowledge, labels = c("Good knowledge", "Some knowledge", "Total"), ordered = TRUE)
     ) %>%
     dplyr::select(main_question, sub_question, p_value, knowledge, answer_label, count, percent, total) %>%
     dplyr::arrange(sub_question, knowledge, answer_label)

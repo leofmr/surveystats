@@ -27,6 +27,8 @@ Imports:
     scales,
     treemapify,
     cowplot,
-    forcats
+    forcats,
+    coin,
+    rstatix
 URL: https://github.com/leofmr/surveystats
 BugReports: https://github.com/leofmr/surveystats/issues
