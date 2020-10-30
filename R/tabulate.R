@@ -32,7 +32,7 @@ tab_survey_question <- function(surveydata, question_number) {
   # geração do string que vai ser utilizado para poder selecionar as colunas de dt
   # que serão utilizadas para a tabulação
   question_start <- paste("q", question_number, "_", sep = "")
-  print(question_start)
+
   # tabulação principal e simples
   # agrupando por subquestão (answer)
   # eliminando as linhas sem respostas

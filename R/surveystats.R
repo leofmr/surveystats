@@ -22,4 +22,5 @@ utils::globalVariables(c("data",
                          "percent",
                          "answer_label",
                          "group1",
-                         "group2"))
+                         "group2",
+                         "percent_label"))

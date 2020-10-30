@@ -2,6 +2,8 @@
 
 export(load_data)
 export(make_bar_graph)
+export(make_combined_treemap_graph)
+export(make_treemap_graph)
 export(tab_all_survey_question)
 export(tab_grouped_questions)
 export(tab_survey_question)

@@ -24,4 +24,7 @@ Imports:
     purrr,
     openxlsx,
     ggplot2,
-    scales
+    scales,
+    treemapify,
+    cowplot,
+    forcats
