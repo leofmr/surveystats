@@ -71,7 +71,7 @@ add_value_to_labels <- function(data, with_labels) {
   if (with_labels) {
     data %>%
       dplyr::mutate(percent = count / sum(count),
-                    percent_label = scales::percent(percent, accuracy = 1),
+                    percent_label = scales::percent(percent, accuracy = .01),
                     group2 = paste(group2, "\n(", percent_label, ")", sep = ""))
   } else {
     data

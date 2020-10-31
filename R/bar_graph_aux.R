@@ -60,7 +60,7 @@ tidy_data_for_bar_graph <- function(data,
 gen_bar_label <- function(tidy_data,
                           with_labels,
                           label_thereshold = 0.05,
-                          percent_accuracy = 1,
+                          percent_accuracy = .01,
                           alignment = 0.5,
                           text_size = 2) {
   if (with_labels) {
