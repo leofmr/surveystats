@@ -142,17 +142,21 @@ gen_fill_scale <- function(palette_color,
 
 #' Gerar rótulos do eixo y
 #'
-#'
+#' @param data Tibble.
 #' @param negative_col Character. Nome da coluna que é negativa
 #' @param intervals Numeric. Tamanho do intervalo da escala de valores continuos do eixo y
 #'
 #' @return Escala de valores para o eixo y do gráfico de barras
 #'
-gen_axis_y_scale <- function(negative_col,
+gen_axis_y_scale <- function(data,
+                             negative_col,
                              intervals = 0.25) {
 
   is_negative <- typeof(negative_col) == "character"
-  lower_limit <- if (is_negative) -1 else 0
+
+
+
+  lower_limit <- if (is_negative) get_lower_limit(data, negative_col, intervals) else 0
 
   limits <- c(lower_limit, 1)
   breaks <- seq(lower_limit, 1, intervals)
@@ -161,6 +165,34 @@ gen_axis_y_scale <- function(negative_col,
   ggplot2::scale_y_continuous(limits = limits,
                               breaks = breaks,
                               labels = labels)
+}
+
+#' Get axis lower limit
+#'
+#' Get axis lower limit for the negative side of a likert scale graph with a negative connotation answer.
+#'
+#' @param data Tibble
+#' @param negative_col Character.
+#' @param intervals Numeric.
+#' @param gap Numeric.
+#'
+#' @return Numeric.
+#'
+#' @author Leonardo Rocha
+get_lower_limit <- function(data, negative_col, intervals, gap = 1.1) {
+  target <- data %>%
+    dplyr::filter(knowledge == "Total" & answer_label == "Unlikely") %>%
+    dplyr::summarise(max = max(percent)) %>%
+    .$max * gap
+
+  range_values <- seq(0, 1, intervals)
+
+  n <- length(range_values) - 1
+  for (x in 1:n) {
+    if ((range_values[x] < target) & range_values[x+1] >= target) {
+      return(range_values[x+1] * -1)
+    }
+  }
 }
 
 

@@ -53,7 +53,7 @@ make_bar_graph <- function(question_data,
   graph_title <- gen_title(data = question_data, max_size = title_max_size, has_title = has_title)
   fill_color_scale <- gen_fill_scale(palette_color = fill_color)
   bar_labels <- gen_bar_label(tidy_data = tidy_data, with_labels = with_labels)
-  y_axis_labels <- gen_axis_y_scale(negative_col = negative_col)
+  y_axis_labels <- gen_axis_y_scale(data = question_data, negative_col = negative_col)
   bar_theme <- gen_graph_theme(base_text_size = base_text_size, legend_position = legend_position, data = question_data)
 
 

@@ -4,9 +4,11 @@
 \alias{gen_axis_y_scale}
 \title{Gerar rótulos do eixo y}
 \usage{
-gen_axis_y_scale(negative_col, intervals = 0.25)
+gen_axis_y_scale(data, negative_col, intervals = 0.25)
 }
 \arguments{
+\item{data}{Tibble.}
+
 \item{negative_col}{Character. Nome da coluna que é negativa}
 
 \item{intervals}{Numeric. Tamanho do intervalo da escala de valores continuos do eixo y}

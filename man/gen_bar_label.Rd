@@ -8,7 +8,7 @@ gen_bar_label(
   tidy_data,
   with_labels,
   label_thereshold = 0.05,
-  percent_accuracy = 1,
+  percent_accuracy = 0.01,
   alignment = 0.5,
   text_size = 2
 )

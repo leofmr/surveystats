@@ -2,15 +2,19 @@
 % Please edit documentation in R/wilcoxon.R
 \name{wilcox_ind_sample}
 \alias{wilcox_ind_sample}
-\title{Utility function for the Wicoxon rank sum test}
+\title{Wilcox independent Sample}
 \usage{
-wilcox_ind_sample(nested_data)
+wilcox_ind_sample(data)
+}
+\arguments{
+\item{data}{Tibble.}
+}
+\value{
+row with Wilcoxon rank test for two indepedent columns
 }
 \description{
-@param nested_data Tibble.
+Utility function for the wilcoxon rank sum test
 }
-\details{
-@return row with wilcoxcon rank sum test for two idependent
-
-@author Leonardo Rocha
+\author{
+Leonardo Rocha
 }

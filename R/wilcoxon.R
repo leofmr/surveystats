@@ -26,17 +26,18 @@ make_wilcox_test <- function(surveydata, qnumber) {
 }
 
 
+#' Wilcox independent Sample
+#'
+#' Utility function for the wilcoxon rank sum test
+#'
+#' @param data Tibble.
+#'
+#' @return row with Wilcoxon rank test for two indepedent columns
+#'
+#' @author Leonardo Rocha
+wilcox_ind_sample <- function(data) {
 
-
-#'  Utility function for the Wicoxon rank sum test
-#'
-#'  @param nested_data Tibble.
-#'
-#'  @return row with wilcoxcon rank sum test for two idependent
-#'
-#'  @author Leonardo Rocha
-wilcox_ind_sample <- function(nested_data) {
-  nested_data %>%
+  data %>%
     dplyr::mutate(answer = as.integer(answer)) %>%
     rstatix::wilcox_test(answer~ knowledge) %>%
     rstatix::add_significance() %>%
