@@ -29,6 +29,12 @@ Imports:
     cowplot,
     forcats,
     coin,
-    rstatix
+    rstatix,
+    RColorBrewer,
+    tibble
 URL: https://github.com/leofmr/surveystats
 BugReports: https://github.com/leofmr/surveystats/issues
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

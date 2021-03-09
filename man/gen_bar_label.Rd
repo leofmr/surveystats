@@ -2,30 +2,39 @@
 % Please edit documentation in R/bar_graph_aux.R
 \name{gen_bar_label}
 \alias{gen_bar_label}
-\title{add label}
+\title{Rótulo para gráfico de barras}
 \usage{
 gen_bar_label(
+  question_data,
   tidy_data,
-  with_labels,
-  label_thereshold = 0.05,
-  percent_accuracy = 0.01,
-  alignment = 0.5,
-  text_size = 2
+  n_negative,
+  label_thereshold,
+  label_percent_accuracy,
+  label_text_size,
+  with_labels
 )
 }
 \arguments{
-\item{tidy_data}{Tibble. Dados da questão principal organizados para a elaboração do gráfico de barras.}
+\item{question_data}{Tibble. Dados organizados relativos a uma questão principal}
 
-\item{with_labels}{Logical. Indicador de se o gráfico apresenta rótulo de texto.}
+\item{tidy_data}{Tibble. Dados arrumados e prontos para serem utilizados na geração dos gráficos}
+
+\item{n_negative}{Numeric. Número de escalas negativas}
 
 \item{label_thereshold}{Numeric. Limiar do percentual para que seja atribuido um rotulo à observação.}
 
-\item{percent_accuracy}{Numeric. Precisão das casas decimais do percentual.}
+\item{label_percent_accuracy}{Numeric. Precisão das casas decimais do percentual.}
 
-\item{alignment}{Numeric. Alinhamento do rótulo de texto.}
+\item{label_text_size}{Numeric. Tamanho dos rótulos de texto.}
 
-\item{text_size}{Numeric. Tamanho dos rótulos de texto.}
+\item{with_labels}{Logical. Indicador de se o gráfico apresenta rótulo de texto.}
+}
+\value{
+ggplot2::geom_text com os rótulos para o gráfico de barras (caso with_labels)
 }
 \description{
-Adiciona rótulos ao gráfico
+Gerado de rótulos para o gráfico de barras
+}
+\author{
+Leonardo Rocha
 }

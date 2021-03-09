@@ -23,6 +23,8 @@
 #' tab_survey_question(AI_survey, 2)
 tab_survey_question <- function(surveydata, question_number) {
 
+  knowledge_distinction = F
+  order_reverse = T
 
   survey_data <- surveydata[['data']]
   question_label <- surveydata[['questions']]
@@ -51,7 +53,8 @@ tab_survey_question <- function(surveydata, question_number) {
     tidyr::complete(answer, fill = list(count = 0)) %>%
     dplyr::ungroup()
 
-  #calculando o p-valor do teste qui-quadrado por questão.
+
+  # calculando o p-valor do teste qui-quadrado por questão.
   # isso é para ver se tem alguma diferença por nível de conhecimento
   # para isso são geradas tabelas de contigência, agrupadas por questão
   # são então cada tabela de contigência é agrupada para questao em uma variável
@@ -81,14 +84,44 @@ tab_survey_question <- function(surveydata, question_number) {
   # questão principal
   # sub questão
   # resposta
-  qtab %>%
+  result <- qtab %>%
     dplyr::bind_rows(qtab_total) %>%
     dplyr::group_by(question, knowledge) %>%
     dplyr::mutate(total = sum(count),
                   percent = count / total) %>%
-    dplyr::ungroup() %>%
-    dplyr::left_join(p_values, by = "question") %>%
+    dplyr::ungroup()
+
+
+  # Isso daqui é uma estrutura provisória, testando um formato sem a distinção por conhecimento
+  # porém os cálculos para fazer a segmentação por nível de conhecimento ainda são realizados
+  # caso necessário seria fácil a reversão, bastando juntar a parte de baixo com a parte de cima
+  # selecionadno apenas o caso em que há distinção por nível de conhecimento
+  if (knowledge_distinction) {
+    result <- result %>% dplyr::left_join(p_values, by = "question")
+  } else {
+    result <- result %>% dplyr::filter(knowledge == "3") %>% dplyr::select(-knowledge)
+  }
+
+  result <- result %>%
     apply_labels(question_label = question_label, answer_label = answer_label)
+
+  # adaptação para contemplar os casos em que a base de dados está em uma ordem inversa das categorias
+  if (order_reverse) {result$answer_label <- forcats::fct_rev(result$answer_label)}
+
+  return(result)
+
+
+
+
+
+#  qtab %>%
+#    dplyr::bind_rows(qtab_total) %>%
+#    dplyr::group_by(question, knowledge) %>%
+#    dplyr::mutate(total = sum(count),
+#                  percent = count / total) %>%
+#    dplyr::ungroup() %>%
+#    dplyr::left_join(p_values, by = "question") %>%
+#    apply_labels(question_label = question_label, answer_label = answer_label)
 }
 
 

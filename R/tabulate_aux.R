@@ -33,25 +33,55 @@ chi.square_pvalue <- function(contingency.table) {
 #'
 #' @importFrom magrittr %>%
 apply_labels <- function(survey_data, question_label, answer_label) {
-  survey_data %>%
-    dplyr::left_join(question_label, by="question") %>%
-    tidyr::separate(question, into=c("main_code", "sub_code")) %>%
-    dplyr::mutate(main_code = stringr::str_remove(main_code, "q"),
-                  answer = as.character(answer)) %>%
-    dplyr::left_join(answer_label, by=c("main_code", "answer")) %>%
-    dplyr::mutate(
-      main_code = as.integer(main_code),
-      sub_code = as.integer(sub_code),
-      answer = as.integer(answer),
-      main_question = stats::reorder(main_question, main_code),
-      sub_question = stats::reorder(sub_question, sub_code),
-      #answer_label = stats::reorder(answer_label, answer),
-      answer_label = forcats::fct_reorder(answer_label, answer),
-      answer_label = factor(answer_label, ordered = TRUE),
-      knowledge = factor(knowledge, labels = c("Good knowledge", "Some knowledge", "Total"), ordered = TRUE)
-    ) %>%
-    dplyr::select(main_question, sub_question, p_value, knowledge, answer_label, count, percent, total) %>%
-    dplyr::arrange(sub_question, knowledge, answer_label)
+
+  knowledge_distinction = F
+
+  # estrutura provisória com o caso em que há distinção de conhecimento
+  # e o caso em que não a distinção por nível de conhecimento
+  # a priori vamos manter sem a distinção, porém caso se julgue ser necessário
+  # fazer a distinção isso seria facilmente revertido, bastando
+  # manter a primeira parte da condicional
+  if (knowledge_distinction) {
+    survey_data %>%
+      dplyr::left_join(question_label, by="question") %>%
+      tidyr::separate(question, into=c("main_code", "sub_code")) %>%
+      dplyr::mutate(main_code = stringr::str_remove(main_code, "q"),
+                    answer = as.character(answer)) %>%
+      dplyr::left_join(answer_label, by=c("main_code", "answer")) %>%
+      dplyr::mutate(
+        main_code = as.integer(main_code),
+        sub_code = as.integer(sub_code),
+        answer = as.integer(answer),
+        main_question = stats::reorder(main_question, main_code),
+        sub_question = stats::reorder(sub_question, sub_code),
+        #answer_label = stats::reorder(answer_label, answer),
+        answer_label = forcats::fct_reorder(answer_label, answer),
+        answer_label = factor(answer_label, ordered = TRUE),
+        knowledge = factor(knowledge, labels = c("Good knowledge", "Some knowledge", "Total"), ordered = TRUE)
+      ) %>%
+      dplyr::select(main_question, sub_question, p_value, knowledge, answer_label, count, percent, total) %>%
+      dplyr::arrange(sub_question, knowledge, answer_label)
+  } else {
+    survey_data %>%
+      dplyr::left_join(question_label, by="question") %>%
+      tidyr::separate(question, into=c("main_code", "sub_code")) %>%
+      dplyr::mutate(main_code = stringr::str_remove(main_code, "q"),
+                    answer = as.character(answer)) %>%
+      dplyr::left_join(answer_label, by=c("main_code", "answer")) %>%
+      dplyr::mutate(
+        main_code = as.integer(main_code),
+        sub_code = as.integer(sub_code),
+        answer = as.integer(answer),
+        main_question = stats::reorder(main_question, main_code),
+        sub_question = stats::reorder(sub_question, sub_code),
+        #answer_label = stats::reorder(answer_label, answer),
+        answer_label = forcats::fct_reorder(answer_label, answer),
+        answer_label = factor(answer_label, ordered = TRUE)
+      ) %>%
+      dplyr::select(main_question, sub_question, answer_label, count, percent, total) %>%
+      dplyr::arrange(sub_question, answer_label)
+  }
+
 }
 
 

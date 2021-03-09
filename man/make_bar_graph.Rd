@@ -2,57 +2,85 @@
 % Please edit documentation in R/bar_graph.R
 \name{make_bar_graph}
 \alias{make_bar_graph}
-\title{Make a bar graph}
+\title{Geração de gráfico de barras}
 \usage{
 make_bar_graph(
   question_data,
-  negative_col = FALSE,
-  fill_color = "Oranges",
+  n_negative,
+  intermediate,
+  diverg_scale = F,
+  negative_palette = "Reds",
+  positive_palette = "Greens",
+  sequential_palette = "Oranges",
   title_max_size = 60,
+  with_title = FALSE,
   legend_max_size = 10,
   axis_max_size = 25,
+  axis_y_interval = 0.25,
+  axis_y_fixed = TRUE,
+  axis_y_gap = 1.1,
   legend_position = "bottom",
   base_text_size = 9,
-  has_title = FALSE,
-  with_labels = TRUE
+  with_labels = TRUE,
+  label_thereshold = 0.05,
+  label_percent_accuracy = 0.2,
+  label_text_size = 2
 )
 }
 \arguments{
-\item{question_data}{Tibble. Question stats table}
+\item{question_data}{Tibble. Dados organizados relativos a uma questão principal}
 
-\item{negative_col}{Character. Name of the category with negative connotation, if \code{FALSE}
-the answers will be ordered by their prevalence. Default to \code{FALSE}.}
+\item{n_negative}{Numeric. Número de escalas negativas}
 
-\item{fill_color}{Character. Color scale name from ggplot2 library. Default \code{'Oranges'}.}
+\item{intermediate}{Logic. Existe escala intermediária}
 
-\item{title_max_size}{Numeric. Max line size for the title text. Default \code{60}.}
+\item{diverg_scale}{Logic. Se a escala de cores vai seguir uma lógica divergente}
 
-\item{legend_max_size}{Numeric. Max line size for the legend text. Default \code{10}.}
+\item{negative_palette}{Character. O nome da paleta de cores para a escala negativa}
 
-\item{axis_max_size}{Numeric. Max line size for the x axis text. Default \code{25}.}
+\item{positive_palette}{Character. O nome da paleta de cores para a escala positiva}
 
-\item{legend_position}{Character. \code{ggplot2} \code{legend_position} character indicator. Default \code{"bottom"}.}
+\item{sequential_palette}{Character. O nome da paleta de cores para a escala seq}
 
-\item{base_text_size}{Numeric. \code{ggplot2} \code{theme} \code{base_size} for all the text elements. Default \code{9}.}
+\item{title_max_size}{Numeric. Tamanho máximo da linha do título}
 
-\item{has_title}{Logical. Indicative if the graph will have a title. The main question label will be used for the
-title text. Default \code{FALSE}.}
+\item{with_title}{Logical. Título deve ser gerado ou não}
 
-\item{with_labels}{Logical.Indicative if the graph will have text indicating the values inside the bar graph.
-To make the figure cleaner answers with prevalence bellow 5\% won't have text. Default \code{TRUE}}
+\item{legend_max_size}{Numeric. Tamanho máximo da linha do texto da legenda do gráfico}
+
+\item{axis_max_size}{Numeric. Tamanho máximo da linha do texto do eixo x do gráfico}
+
+\item{axis_y_interval}{Numeric. Tamanho do intervalo entre os rótulos do eixo}
+
+\item{axis_y_fixed}{Logical. Se o eixo vai ser fixo ou ajustado aos dados}
+
+\item{axis_y_gap}{Numeric. Tamanho da margem para o ajuste aos dados}
+
+\item{legend_position}{Character. Indicativo da posição da legenda.}
+
+\item{base_text_size}{Numeric. Tamanho base dos textos para o tema.}
+
+\item{with_labels}{Logical. Indicador de se o gráfico apresenta rótulo de texto.}
+
+\item{label_thereshold}{Numeric. Limiar do percentual para que seja atribuido um rotulo à observação.}
+
+\item{label_percent_accuracy}{Numeric. Precisão das casas decimais do percentual.}
+
+\item{label_text_size}{Numeric. Tamanho dos rótulos de texto.}
 }
 \value{
-Custom horizontal bar graph: a likert-scale or a ordered by value answers.
+ggplot2::ggplot de gráfico de barras
 }
 \description{
-Function to make a likert scale bar graph or ordered by values bar graph
+Função para a geração de gráfico de barras para questões de survey categóricas.
 }
 \details{
-Make horizontal bar graph with the \code{question_data} provided.
-If a \code{negative_col} is provided it will be a likert-scale graph with
-the \code{negative_col} been the answer with a negative connotation. Else,
-the answers categories in the bar graph will be ordered according to their
-prevalence.
+Essa função pode ser utilizada para a criação de gráficos em barra,
+podendo gerar gráficos de barras divergentes ou sequenciais empilhadas.
+Múltiplas configurações podem ser realizadas através da modificação dos
+pâmetros. Como por exemplo, adicionar ou remover títulos e rótulos aos
+dados, modificar o tamanho dos textos, modifcar as cores a serem utilizadas
+nas escalas divergentes e sequenciais etc.
 }
 \author{
 Leonardo Rocha

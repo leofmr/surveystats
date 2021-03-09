@@ -1,0 +1,79 @@
+---
+title: "demo-survey-AI"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{demo-survey-AI}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(surveystats)
+```
+
+# Carregando os dados
+
+Para que a importação dos dados seja realizada corretamente os arquivos precisao estar formatados corretamentes. 
+
+Sub
+
+Arquivo Excel formatado.
+
+
+
+Os dados da pesquisa devem estar armazenados em um arquivo Excel composto por três planilhas. Na primeria planilha devem estar os dados importados do Survey Monkey. Todas as respostas devem estar como números. As colunas precisam ser reorganizadas e renomeadas. Cada coluna deve ser referente a uma pergunta ou sub-pergunta. As sub-perguntas são extensões de uma pergunta.
+
+[fig-exemplo]
+
+
+
+Os dados de um arquivo Excel compostos pelas respostas representadas por números, e pelos dicionários de questões e respostas podem ser carregados a partir da função load_data.
+Forma com os dados está.
+Forma com que a tabela de questões está.
+Forma com que a tabela de respostas está.
+
+```{r, eval=FALSE}
+survey <- load_data("data_path")
+```
+
+Essa demo irá utilizar os dados contidas no próprio pacote. Esses dados são referentes ao survey de AI. O resultado da aplicação da função load_data() deverá ser exatamente igual a como está nos dados de exemplo do pacote. Como resultado temos uma lista nomeada composta por 'data', 'questions', 'answers'. Cada um desses itens na lista é um objeto do tipo data.frame. O objeto 'data' é a tabela com os dados do survey em sua codificação numérica. Os objetos 'questions' e 'answers' são as tabelas compostas dos rótulos de questões e respostas respectivamente. Cada um desses objetos é refernte a uma planilha do arquivo Excel.
+
+```{r}
+head(AI_survey$data)
+```
+
+
+# Tabulando as estatísticas por questão
+
+Os cáculos dos percentuais por nível de conhecimento e pergunta é calculado por questão principal. Para cada questão principal é gerada uma tabela com as contagens absolutas e relativas de respondentes por subquestão, nível de conhecimento e resposta. Todos os atributos, que antes estavam representadas por um número ou codificação, agora estão sendo representadas por seus respectivos rótulos. A rotulação é realizada de modo a preservar a ordenação da numeração. Uma coluna adicional temos também o total de respondentes por subquestão e nível de conhecimento.
+
+O cálculo dessa tabela para uma questão principal pode ser realizada através da função tab_survey_question(), para essa função é necessário fornecer os dados do survey (a lista composta por dados, rótulos de questões e rótulos de respostas) e o número da questão principal a ser tabulada.
+
+```{r}
+question4_tab <- tab_survey_question(AI_survey, 4)
+head(question4_tab)
+```
+
+Esse cálculo pode ser realizado para todas as questões principais de uma vez só (com excessão da questão de nível de conhecimento) utilizando a função tab_all_survey_question(). Essa função recebe como argumento apenas os dados do survey. Como resultado serão geradas uma tabela para cada uma questão principal, armazenadas em uma lista nomeada. Cada elemento da lista é referente a uma questão principal. O nome de cada elemento da lista é composto pela letra 'q'somada ao número da questão principal.
+
+```{r}
+question_tabs <- tab_all_survey_question(AI_survey)
+print(names(question_tabs))
+head(question_tabs$q4)
+```
+
+# Fazendo os gráficos
+
+  - Gráfico para cada uma das questões
+  - Múltiplos tipos 
+
+
+
+

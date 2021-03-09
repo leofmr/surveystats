@@ -1,71 +1,142 @@
-#' Make a bar graph
+#' Geração de gráfico de barras
 #'
-#' Function to make a likert scale bar graph or ordered by values bar graph
+#' Função para a geração de gráfico de barras para questões de survey categóricas.
 #'
-#' Make horizontal bar graph with the \code{question_data} provided.
-#' If a \code{negative_col} is provided it will be a likert-scale graph with
-#' the \code{negative_col} been the answer with a negative connotation. Else,
-#' the answers categories in the bar graph will be ordered according to their
-#' prevalence.
+#' Essa função pode ser utilizada para a criação de gráficos em barra,
+#' podendo gerar gráficos de barras divergentes ou sequenciais empilhadas.
+#' Múltiplas configurações podem ser realizadas através da modificação dos
+#' pâmetros. Como por exemplo, adicionar ou remover títulos e rótulos aos
+#' dados, modificar o tamanho dos textos, modifcar as cores a serem utilizadas
+#' nas escalas divergentes e sequenciais etc.
 #'
+#' @param question_data Tibble. Dados organizados relativos a uma questão principal
+#' @param n_negative Numeric. Número de escalas negativas
+#' @param intermediate Logic. Existe escala intermediária
+#' @param diverg_scale Logic. Se a escala de cores vai seguir uma lógica divergente
+#' @param negative_palette Character. O nome da paleta de cores para a escala negativa
+#' @param positive_palette Character. O nome da paleta de cores para a escala positiva
+#' @param sequential_palette Character. O nome da paleta de cores para a escala seq
+#' @param title_max_size Numeric. Tamanho máximo da linha do título
+#' @param with_title Logical. Título deve ser gerado ou não
+#' @param legend_max_size Numeric. Tamanho máximo da linha do texto da legenda do gráfico
+#' @param axis_max_size Numeric. Tamanho máximo da linha do texto do eixo x do gráfico
+#' @param axis_y_interval Numeric. Tamanho do intervalo entre os rótulos do eixo
+#' @param axis_y_fixed Logical. Se o eixo vai ser fixo ou ajustado aos dados
+#' @param axis_y_gap Numeric. Tamanho da margem para o ajuste aos dados
+#' @param legend_position Character. Indicativo da posição da legenda.
+#' @param base_text_size Numeric. Tamanho base dos textos para o tema.
+#' @param with_labels Logical. Indicador de se o gráfico apresenta rótulo de texto.
+#' @param label_thereshold Numeric. Limiar do percentual para que seja atribuido um rotulo à observação.
+#' @param label_percent_accuracy Numeric. Precisão das casas decimais do percentual.
+#' @param label_text_size Numeric. Tamanho dos rótulos de texto.
 #'
-#' @param question_data Tibble. Question stats table
-#' @param negative_col Character. Name of the category with negative connotation, if \code{FALSE}
-#' the answers will be ordered by their prevalence. Default to \code{FALSE}.
-#' @param fill_color Character. Color scale name from ggplot2 library. Default \code{'Oranges'}.
-#' @param title_max_size Numeric. Max line size for the title text. Default \code{60}.
-#' @param legend_max_size Numeric. Max line size for the legend text. Default \code{10}.
-#' @param axis_max_size Numeric. Max line size for the x axis text. Default \code{25}.
-#' @param legend_position Character. \code{ggplot2} \code{legend_position} character indicator. Default \code{"bottom"}.
-#' @param base_text_size Numeric. \code{ggplot2} \code{theme} \code{base_size} for all the text elements. Default \code{9}.
-#' @param has_title Logical. Indicative if the graph will have a title. The main question label will be used for the
-#' title text. Default \code{FALSE}.
-#' @param with_labels Logical.Indicative if the graph will have text indicating the values inside the bar graph.
-#' To make the figure cleaner answers with prevalence bellow 5% won't have text. Default \code{TRUE}
-#'
-#' @return Custom horizontal bar graph: a likert-scale or a ordered by value answers.
-#'
-#' @export
+#' @return ggplot2::ggplot de gráfico de barras
 #'
 #' @author Leonardo Rocha
 #'
+#' @export
+#'
 make_bar_graph <- function(question_data,
-                           negative_col = FALSE,
-                           fill_color = "Oranges",
+                           n_negative,
+                           intermediate,
+                           diverg_scale = F,
+                           negative_palette = "Reds",
+                           positive_palette = "Greens",
+                           sequential_palette = "Oranges",
                            title_max_size = 60,
-                           legend_max_size = 10,
-                           axis_max_size = 25,
+                           with_title = FALSE,
+                           legend_max_size = 10, #
+                           axis_max_size = 25, #
+                           axis_y_interval = 0.25,
+                           axis_y_fixed = TRUE,
+                           axis_y_gap = 1.1,
                            legend_position = "bottom",
                            base_text_size = 9,
-                           has_title = FALSE,
-                           with_labels = TRUE) {
+                           with_labels = TRUE,
+                           label_thereshold = 0.05,
+                           label_percent_accuracy = .2,
+                           label_text_size = 2) {
+
+  sub_question_ordered <- class(question_data$sub_question)[1] == "ordered"
+
+  if (sub_question_ordered) {
+    question_data$sub_question <- forcats::fct_rev(question_data$sub_question)
+  }
 
 
-  # Preparação dos dados para a geração do gráfico
-  tidy_data <- tidy_data_for_bar_graph(
-    data = question_data,
-    negative_col = negative_col,
-    legend_max_size = legend_max_size,
-    axis_max_size = axis_max_size
-  )
+  question_data <- question_data %>%
+    dplyr::mutate(answer_label = factor(answer_label,
+                                        labels = lapply(levels(answer_label),
+                                                        break_text, max_size = legend_max_size)),
+                  sub_question = factor(sub_question,
+                                        labels = lapply(levels(sub_question),
+                                                        break_text, max_size = axis_max_size)))
+
+  # tidy_data
+  tidy_data <- tidy_data_for_bar_graph(question_data = question_data,
+                                       n_negative = n_negative,
+                                       intermediate = intermediate,
+                                       legend_max_size = legend_max_size,
+                                       axis_max_size = axis_max_size)
 
 
-  graph_title <- gen_title(data = question_data, max_size = title_max_size, has_title = has_title)
-  fill_color_scale <- gen_fill_scale(palette_color = fill_color)
-  bar_labels <- gen_bar_label(tidy_data = tidy_data, with_labels = with_labels)
-  y_axis_labels <- gen_axis_y_scale(data = question_data, negative_col = negative_col)
-  bar_theme <- gen_graph_theme(base_text_size = base_text_size, legend_position = legend_position, data = question_data)
+
+  # graph_title
+  title <- gen_title(question_data = question_data,
+                     title_max_size = title_max_size,
+                     with_title = with_title)
 
 
-  # geração do gráfico de barras a partir dos dados gerados anteriormente
-  tidy_data %>%
-    ggplot2::ggplot(ggplot2::aes(x = sub_question, y = percent, fill = answer_label)) +
-    ggplot2::geom_col(color = "white") +
-    ggplot2::coord_flip() +
-    ggplot2::labs(x = NULL, y = NULL, fill = NULL, title = graph_title) +
-    ggplot2::guides(fill = ggplot2::guide_legend(reverse = TRUE, nrow = 1)) +
-    fill_color_scale +
-    bar_labels +
-    y_axis_labels +
-    bar_theme
+
+
+   # fill_colors
+  bar_fill <- gen_fill_scale(tidy_data = tidy_data,
+                             n_negative = n_negative,
+                             intermediate = intermediate,
+                             diverg_scale = diverg_scale,
+                             negative_palette = negative_palette,
+                             positive_palette = positive_palette,
+                             sequential_palette = sequential_palette)
+
+
+
+  # bar_labels
+  bar_labels <- gen_bar_label(question_data = question_data,
+                              tidy_data = tidy_data,
+                              n_negative = n_negative,
+                              label_thereshold = label_thereshold,
+                              label_percent_accuracy = label_percent_accuracy,
+                              label_text_size = label_text_size,
+                              with_labels = with_labels)
+
+
+
+  # y_axis
+  y_axis <- gen_axis_y_scale(tidy_data = tidy_data,
+                             n_negative = n_negative,
+                             axis_y_interval = axis_y_interval,
+                             axis_y_fixed = axis_y_fixed,
+                             axis_y_gap = axis_y_gap)
+
+  # tema
+  theme <- gen_graph_theme(base_text_size = base_text_size,
+                           legend_position = legend_position,
+                           question_data = question_data)
+
+
+
+  #return(tidy_data)
+
+  # gerando o gráfico
+  ggplot2::ggplot() +
+    ggplot2::geom_col(data = dplyr::filter(tidy_data, percent > 0),
+                      ggplot2::aes(x = sub_question, y = percent, fill = answer_label),
+                      ggplot2::position_stack(reverse=TRUE)) +
+    ggplot2::geom_col(data = dplyr::filter(tidy_data, percent < 0),
+                      ggplot2::aes(x = sub_question, y = percent, fill = answer_label),
+                      ggplot2::position_stack(reverse=FALSE)) +
+    bar_fill + bar_labels + y_axis + theme +
+    ggplot2::labs(x = NULL, y = NULL, fill = NULL, title = title) +
+    ggplot2::coord_flip()
+
 }

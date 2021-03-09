@@ -4,18 +4,21 @@
 \alias{gen_title}
 \title{Gerador de título}
 \usage{
-gen_title(data, max_size, has_title)
+gen_title(question_data, title_max_size, with_title)
 }
 \arguments{
-\item{data}{Tibble. Dados organizados relativos a uma questão principal}
+\item{question_data}{Tibble. Dados organizados relativos a uma questão principal}
 
-\item{max_size}{Numeric. Tamanho máximo da linha do título}
+\item{title_max_size}{Numeric. Tamanho máximo da linha do título}
 
-\item{has_title}{Logical. Título deve ser gerado ou não}
+\item{with_title}{Logical. Título deve ser gerado ou não}
 }
 \value{
-Título a ser utilizado no gráfico
+Character. Título a ser utilizado no gráfico
 }
 \description{
 Gerador do título para o gráfico de barras
+}
+\author{
+Leonardo Rocha
 }

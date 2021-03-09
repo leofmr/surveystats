@@ -2,29 +2,38 @@
 % Please edit documentation in R/bar_graph_aux.R
 \name{gen_fill_scale}
 \alias{gen_fill_scale}
-\title{Gerar escala de cores}
+\title{Gera a escala de cores}
 \usage{
 gen_fill_scale(
-  palette_color,
-  direction_color = 1,
-  grey_start = 0.7,
-  grey_end = 0.3
+  tidy_data,
+  n_negative,
+  intermediate,
+  diverg_scale,
+  negative_palette,
+  positive_palette,
+  sequential_palette
 )
 }
 \arguments{
-\item{palette_color}{Character. Nome da paleta de cores utilizadas caso não seja em escala de cinza}
+\item{tidy_data}{Tibble. Dados arrumados e prontos para serem utilizados na geração dos gráficos}
 
-\item{direction_color}{Numeric. Direção da paleta de cores}
+\item{n_negative}{Numeric. Número de escalas negativas}
 
-\item{grey_start}{Numeric. Intensidade de cinza do começo da escala de cinza}
+\item{intermediate}{Logic. Existe escala intermediária}
 
-\item{grey_end}{Numeric. Intensidade de cinza do fim da escala de cinza}
+\item{diverg_scale}{Logic. Se a escala de cores vai seguir uma lógica divergente}
+
+\item{negative_palette}{Character. O nome da paleta de cores para a escala negativa}
+
+\item{positive_palette}{Character. O nome da paleta de cores para a escala positiva}
+
+\item{sequential_palette}{Character. O nome da paleta de cores para a escala sequencial}
 }
 \value{
-Escala de cor para o gráfico de barras
+ggplot2::scale_fill_manual com a escala para preenchimento do gráfico de barras
 }
 \description{
-Gerar escala de cores para o gráfico de barras
+Gera a escala de cores para o gráfico de barras
 }
 \author{
 Leonardo Rocha

@@ -2,17 +2,23 @@
 % Please edit documentation in R/bar_graph_aux.R
 \name{gen_graph_theme}
 \alias{gen_graph_theme}
-\title{Gerar removedor de rótulos do eixo x}
+\title{Gerador de tema de gráfico em barras}
 \usage{
-gen_graph_theme(base_text_size, legend_position, data)
+gen_graph_theme(base_text_size, legend_position, question_data)
 }
 \arguments{
 \item{base_text_size}{Numeric. Tamanho base dos textos para o tema.}
 
 \item{legend_position}{Character. Indicativo da posição da legenda.}
 
-\item{data}{Tibble. Dados com a tabulação da questão principal.}
+\item{question_data}{Tibble. Dados com a tabulação da questão principal.}
+}
+\value{
+ggplot2::theme com a configuração do tema para o gráfico de barras
 }
 \description{
-Gerar removedor de rótulos do eixo x
+Gera o tema para ser utilizado no gráfico de barras.
+}
+\author{
+Leonardo Rocha
 }
